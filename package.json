@@ -1,0 +1,40 @@
+{
+	"name": "@hugoalh/range-iterator",
+	"version": "1.0.0",
+	"description": "A module to iterate between range.",
+	"keywords": [
+		"range",
+		"iterate",
+		"iterator"
+	],
+	"homepage": "https://github.com/hugoalh-studio/range-iterator-nodejs#readme",
+	"bugs": {
+		"url": "https://github.com/hugoalh-studio/range-iterator-nodejs/issues"
+	},
+	"license": "MIT",
+	"author": "hugoalh",
+	"type": "module",
+	"main": "./dist/main.js",
+	"exports": {
+		"import": "./dist/main.js"
+	},
+	"types": "./dist/main.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/hugoalh-studio/range-iterator-nodejs.git"
+	},
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^6.5.0",
+		"@typescript-eslint/parser": "^6.5.0",
+		"eslint": "^8.48.0",
+		"eslint-plugin-only-warn": "^1.1.0",
+		"typescript": "^5.2.2"
+	},
+	"engines": {
+		"node": "^14.15.0 || >=16.13.0"
+	},
+	"private": false,
+	"publishConfig": {
+		"access": "public"
+	}
+}
