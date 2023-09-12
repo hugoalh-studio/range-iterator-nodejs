@@ -1,15 +1,25 @@
 /**
+ * Resolve code point of the character.
  * @access private
- * @param {string} name
- * @param {string} value
- * @returns {number}
+ * @param {string} argumentName Argument name.
+ * @param {string} value Character.
+ * @returns {number} Code point of the character.
  */
-function checkCharacter(name, value) {
-    const valueSplit = [...value];
-    if (valueSplit.length !== 1) {
-        throw new RangeError(`\`${valueSplit.join(" ")}\` (argument \`${name}\`) is not a character which is in code point range 0 ~ 1114111!`);
+function resolveCharacterCodePoint(argumentName, value) {
+    try {
+        const valueSplit = [...value];
+        if (valueSplit.length !== 1) {
+            throw undefined;
+        }
+        const characterCodePoint = value.codePointAt(0);
+        if (typeof characterCodePoint === "undefined") {
+            throw undefined;
+        }
+        return characterCodePoint;
     }
-    return value.codePointAt(0);
+    catch {
+        throw new RangeError(`\`${value}\` (argument \`${argumentName}\`) is not a character which is in code point range 0 ~ 1114111!`);
+    }
 }
 /**
  * @access private
@@ -17,12 +27,12 @@ function checkCharacter(name, value) {
  * @param {RangeLooperParameters<T>} param
  * @returns {Generator<T, void, unknown>}
  */
-function* rangeLooper(param) {
-    const isReverse = param.start > param.end;
+function* rangeLooper({ end, endExclusive, resultIsString, start, step }) {
+    const isReverse = start > end;
     //@ts-ignore All of the types are compatible.
-    for (let current = param.start; isReverse ? current >= param.end : current <= param.end; current += isReverse ? -param.step : param.step) {
-        if (!(param.endExclusive && current === param.end)) {
-            if (param.resultIsString) {
+    for (let current = start; isReverse ? (current >= end) : (current <= end); current += isReverse ? -step : step) {
+        if (!(endExclusive && current === end)) {
+            if (resultIsString) {
                 yield String.fromCodePoint(current);
             }
             else {
@@ -32,81 +42,65 @@ function* rangeLooper(param) {
     }
 }
 export function rangeIterator(start, end, options = {}) {
-    if (typeof options === "bigint" ||
-        typeof options === "number") {
+    if (typeof options !== "object") {
         options = {
             step: options
         };
     }
-    let endExclusive = false;
-    options.endExclusive ?? (options.endExclusive = options.exclusiveEnd);
-    if (typeof options.endExclusive === "boolean") {
-        endExclusive = options.endExclusive;
-    }
-    else if (typeof options.endExclusive !== "undefined") {
-        throw new TypeError(`Argument \`options.endExclusive\` is not a boolean or undefined!`);
-    }
+    const optionsEndExclusive = options.endExclusive ?? options.exclusiveEnd ?? false;
     if (typeof start === "bigint" && typeof end === "bigint") {
-        let step = 1n;
-        if (typeof options.step === "bigint") {
+        let optionsStep = 1n;
+        if (typeof options.step !== "undefined") {
             if (!(options.step > 0n)) {
-                throw new RangeError(`Argument \`options.step\` is not a bigint which is > 0n!`);
+                throw new RangeError(`Argument \`options.step\` is not a bigint which is > 0!`);
             }
-            step = options.step;
-        }
-        else if (typeof options.step !== "undefined") {
-            throw new TypeError(`Argument \`options.step\` is not a bigint or undefined!`);
+            optionsStep = options.step;
         }
         return rangeLooper({
             end,
-            step,
-            endExclusive,
+            endExclusive: optionsEndExclusive,
             resultIsString: false,
-            start
+            start,
+            step: optionsStep
         });
+    }
+    let resultIsString = false;
+    let startAsNumber;
+    let endAsNumber;
+    if (typeof start === "number" && typeof end === "number") {
+        startAsNumber = start;
+        endAsNumber = end;
+    }
+    else if (typeof start === "string" && typeof end === "string") {
+        resultIsString = true;
+        startAsNumber = resolveCharacterCodePoint("start", start);
+        endAsNumber = resolveCharacterCodePoint("end", end);
     }
     else {
-        let endAsNumber;
-        let startAsNumber;
-        let resultIsString = false;
-        if (typeof start === "number" && !Number.isNaN(start) && typeof end === "number" && !Number.isNaN(end)) {
-            endAsNumber = end;
-            startAsNumber = start;
+        throw new TypeError(`Arguments \`start\` and \`end\` are not bigints, numbers, or strings (character)!`);
+    }
+    let optionsStep = 1;
+    if (typeof options.step !== "undefined") {
+        if (!(options.step > 0)) {
+            throw new RangeError(`Argument \`options.step\` is not a number which is > 0!`);
         }
-        else if (typeof start === "string" && typeof end === "string") {
-            resultIsString = true;
-            startAsNumber = checkCharacter("start", start);
-            endAsNumber = checkCharacter("end", end);
-        }
-        else {
-            throw new TypeError(`Arguments \`start\` and \`end\` are not bigints, numbers, or strings (character)!`);
-        }
-        let step = 1;
-        if (typeof options.step === "number" && !Number.isNaN(options.step)) {
-            if (!(options.step > 0)) {
-                throw new RangeError(`Argument \`options.step\` is not a number which is > 0!`);
-            }
-            step = options.step;
-        }
-        else if (typeof options.step !== "undefined") {
-            throw new TypeError(`Argument \`options.step\` is not a number or undefined!`);
-        }
-        if (resultIsString) {
-            return rangeLooper({
-                end: endAsNumber,
-                endExclusive,
-                resultIsString: true,
-                start: startAsNumber,
-                step
-            });
-        }
+        optionsStep = options.step;
+    }
+    if (resultIsString) {
         return rangeLooper({
             end: endAsNumber,
-            endExclusive,
-            resultIsString: false,
+            endExclusive: optionsEndExclusive,
+            resultIsString: true,
             start: startAsNumber,
-            step
+            step: optionsStep
         });
     }
+    return rangeLooper({
+        end: endAsNumber,
+        endExclusive: optionsEndExclusive,
+        resultIsString: false,
+        start: startAsNumber,
+        step: optionsStep
+    });
 }
 export default rangeIterator;
