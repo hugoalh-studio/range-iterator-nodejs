@@ -22,7 +22,7 @@ A NodeJS module to iterate between range.
 - **Domain/Registry:**
   - [NPM](https://www.npmjs.com/package/@hugoalh/range-iterator)
     ```sh
-    bun add @hugoalh/range-iterator
+    bun add @hugoalh/range-iterator[@<Tag>]
     ```
     ```js
     import ... from "@hugoalh/range-iterator[@<Tag>]";
@@ -38,7 +38,7 @@ A NodeJS module to iterate between range.
 - **Domain/Registry:**
   - [NPM](https://www.npmjs.com/package/@hugoalh/range-iterator)
     ```sh
-    npm install @hugoalh/range-iterator
+    npm install @hugoalh/range-iterator[@<Tag>]
     ```
     ```js
     import ... from "@hugoalh/range-iterator";
