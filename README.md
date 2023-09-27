@@ -77,7 +77,7 @@ A NodeJS module to iterate between range.
 ## ✍️ Example
 
 - ```js
-  import rangeIterator from "@hugoalh/range-iterator";
+  import { rangeIterator } from "@hugoalh/range-iterator";
 
   Array.from(rangeIterator(1, 9));
   //=> [1, 2, 3, 4, 5, 6, 7, 8, 9]
