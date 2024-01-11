@@ -24,8 +24,8 @@ function resolveCharacterCodePoint(argumentName, value) {
 /**
  * @access private
  * @template {bigint | number | string} T
- * @param {RangeLooperParameters<T>} param
- * @returns {Generator<T, void, unknown>}
+ * @param {RangeLooperParameters<T>} param0
+ * @returns {Generator<T>}
  */
 function* rangeLooper({ end, endExclusive, resultIsString, start, step }) {
     const isReverse = start > end;
@@ -43,25 +43,23 @@ function* rangeLooper({ end, endExclusive, resultIsString, start, step }) {
 }
 export function rangeIterator(start, end, options = {}) {
     if (typeof options !== "object") {
-        options = {
-            step: options
-        };
+        options = { step: options };
     }
     const optionsEndExclusive = options.endExclusive ?? options.exclusiveEnd ?? false;
     if (typeof start === "bigint" && typeof end === "bigint") {
-        let optionsStep = 1n;
+        let step = 1n;
         if (typeof options.step !== "undefined") {
             if (!(options.step > 0n)) {
                 throw new RangeError(`Argument \`options.step\` is not a bigint which is > 0!`);
             }
-            optionsStep = options.step;
+            step = options.step;
         }
         return rangeLooper({
             end,
             endExclusive: optionsEndExclusive,
             resultIsString: false,
             start,
-            step: optionsStep
+            step
         });
     }
     let resultIsString = false;
@@ -79,12 +77,12 @@ export function rangeIterator(start, end, options = {}) {
     else {
         throw new TypeError(`Arguments \`start\` and \`end\` are not bigints, numbers, or strings (character)!`);
     }
-    let optionsStep = 1;
+    let step = 1;
     if (typeof options.step !== "undefined") {
         if (!(options.step > 0)) {
             throw new RangeError(`Argument \`options.step\` is not a number which is > 0!`);
         }
-        optionsStep = options.step;
+        step = options.step;
     }
     if (resultIsString) {
         return rangeLooper({
@@ -92,7 +90,7 @@ export function rangeIterator(start, end, options = {}) {
             endExclusive: optionsEndExclusive,
             resultIsString: true,
             start: startAsNumber,
-            step: optionsStep
+            step
         });
     }
     return rangeLooper({
@@ -100,7 +98,7 @@ export function rangeIterator(start, end, options = {}) {
         endExclusive: optionsEndExclusive,
         resultIsString: false,
         start: startAsNumber,
-        step: optionsStep
+        step
     });
 }
 export default rangeIterator;

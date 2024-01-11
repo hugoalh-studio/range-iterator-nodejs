@@ -24,7 +24,7 @@ export interface RangeIteratorOptions<T> {
  * @param {bigint} start Start.
  * @param {bigint} end End.
  * @param {RangeIteratorOptions<bigint>["step"]} [step] Step.
- * @returns {Generator<bigint, void, unknown>}
+ * @returns {Generator<bigint>}
  * @example
  * Array.from(rangeIterator(1n, 9n));
  * //=> [1n, 2n, 3n, 4n, 5n, 6n, 7n, 8n, 9n]
@@ -38,13 +38,13 @@ export interface RangeIteratorOptions<T> {
  * Array.from(rangeIterator(9n, 1n, 2n));
  * //=> [9n, 7n, 5n, 3n, 1n]
  */
-export declare function rangeIterator(start: bigint, end: bigint, step?: RangeIteratorOptions<bigint>["step"]): Generator<bigint, void, unknown>;
+export declare function rangeIterator(start: bigint, end: bigint, step?: RangeIteratorOptions<bigint>["step"]): Generator<bigint>;
 /**
  * Range iterator with numbers.
  * @param {number} start Start.
  * @param {number} end End.
  * @param {RangeIteratorOptions<number>["step"]} [step] Step.
- * @returns {Generator<number, void, unknown>}
+ * @returns {Generator<number>}
  * @example
  * Array.from(rangeIterator(1, 9));
  * //=> [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -58,13 +58,13 @@ export declare function rangeIterator(start: bigint, end: bigint, step?: RangeIt
  * Array.from(rangeIterator(9, 1, 2));
  * //=> [9, 7, 5, 3, 1]
  */
-export declare function rangeIterator(start: number, end: number, step?: RangeIteratorOptions<number>["step"]): Generator<number, void, unknown>;
+export declare function rangeIterator(start: number, end: number, step?: RangeIteratorOptions<number>["step"]): Generator<number>;
 /**
  * Range iterator with characters.
  * @param {string} start Start.
  * @param {string} end End.
  * @param {RangeIteratorOptions<number>["step"]} [step] Step.
- * @returns {Generator<string, void, unknown>}
+ * @returns {Generator<string>}
  * @example
  * Array.from(rangeIterator("a", "g"));
  * //=> ["a", "b", "c", "d", "e", "f", "g"]
@@ -78,36 +78,36 @@ export declare function rangeIterator(start: number, end: number, step?: RangeIt
  * Array.from(rangeIterator("g", "a", 2));
  * //=> ["g", "e", "c", "a"]
  */
-export declare function rangeIterator(start: string, end: string, step?: RangeIteratorOptions<string>["step"]): Generator<string, void, unknown>;
+export declare function rangeIterator(start: string, end: string, step?: RangeIteratorOptions<string>["step"]): Generator<string>;
 /**
  * Range iterator with big integers.
  * @param {bigint} start Start.
  * @param {bigint} end End.
  * @param {RangeIteratorOptions<bigint>} [options] Options.
- * @returns {Generator<bigint, void, unknown>}
+ * @returns {Generator<bigint>}
  * @example
  * Array.from(rangeIterator(1n, 9n, { endExclusive: true }));
  * //=> [1n, 2n, 3n, 4n, 5n, 6n, 7n, 8n]
  */
-export declare function rangeIterator(start: bigint, end: bigint, options?: RangeIteratorOptions<bigint>): Generator<bigint, void, unknown>;
+export declare function rangeIterator(start: bigint, end: bigint, options?: RangeIteratorOptions<bigint>): Generator<bigint>;
 /**
  * Range iterator with numbers.
  * @param {number} start Start.
  * @param {number} end End.
  * @param {RangeIteratorOptions<number>} [options] Options.
- * @returns {Generator<number, void, unknown>}
+ * @returns {Generator<number>}
  * @example
  * Array.from(rangeIterator(1, 9, { endExclusive: true }));
  * //=> [1, 2, 3, 4, 5, 6, 7, 8]
  */
-export declare function rangeIterator(start: number, end: number, options?: RangeIteratorOptions<number>): Generator<number, void, unknown>;
+export declare function rangeIterator(start: number, end: number, options?: RangeIteratorOptions<number>): Generator<number>;
 /**
  * Range iterator with characters.
  * @param {string} start Start.
  * @param {string} end End.
  * @param {RangeIteratorOptions<number>} [options] Options.
- * @returns {Generator<string, void, unknown>}
+ * @returns {Generator<string>}
  */
-export declare function rangeIterator(start: string, end: string, options?: RangeIteratorOptions<string>): Generator<string, void, unknown>;
+export declare function rangeIterator(start: string, end: string, options?: RangeIteratorOptions<string>): Generator<string>;
 export default rangeIterator;
 //# sourceMappingURL=main.d.ts.map
