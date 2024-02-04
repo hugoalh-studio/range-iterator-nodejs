@@ -24,6 +24,9 @@
 		"type": "git",
 		"url": "git+https://github.com/hugoalh-studio/range-iterator-nodejs.git"
 	},
+	"scripts": {
+		"build": "tsc"
+	},
 	"devDependencies": {
 		"@stylistic/eslint-plugin": "^1.5.4",
 		"@typescript-eslint/eslint-plugin": "^6.19.1",
